@@ -1,0 +1,3 @@
+[submodule "reliable.io"]
+	path = reliable.io
+	url = https://github.com/networkprotocol/reliable.io
