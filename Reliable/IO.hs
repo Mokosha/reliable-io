@@ -51,8 +51,6 @@ module Reliable.IO (
 
 -------------------------------------------------------------------------------
 
-import Bindings.Reliable.IO
-
 import Control.Monad         (unless)
 import Data.Data             (Data)
 import Data.Typeable         (Typeable)
@@ -65,6 +63,8 @@ import Foreign.Marshal.Alloc (alloca)
 import Foreign.Marshal.Array (peekArray)
 import Foreign.Ptr           (freeHaskellFunPtr)
 import Foreign.Storable      (poke, Storable(..))
+
+import Bindings.Reliable.IO
 
 -------------------------------------------------------------------------------
 
