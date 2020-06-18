@@ -74,6 +74,8 @@ import Prelude                ( IO, Eq, Show, Num
 #field       index,                           CInt
 #field       max_packet_size,                 CInt
 #field       fragment_above,                  CInt
+#field       max_fragments,                   CInt
+#field       fragment_size,                   CInt
 #field       ack_buffer_size,                 CInt
 #field       sent_packets_buffer_size,        CInt
 #field       received_packets_buffer_size,    CInt
@@ -96,7 +98,6 @@ import Prelude                ( IO, Eq, Show, Num
 #ccall reliable_endpoint_next_packet_sequence, Ptr <reliable_endpoint_t> -> IO Word16
 #ccall reliable_endpoint_send_packet, Ptr <reliable_endpoint_t> -> Ptr Word8 -> CInt -> IO ()
 #ccall reliable_endpoint_receive_packet, Ptr <reliable_endpoint_t> -> Ptr Word8 -> CInt -> IO ()
-#ccall reliable_endpoint_free_packet, Ptr <reliable_endpoint_t> -> Ptr () -> IO ()
 #ccall reliable_endpoint_get_acks, Ptr <reliable_endpoint_t> -> Ptr CInt -> IO (Ptr Word16)
 #ccall reliable_endpoint_clear_acks, Ptr <reliable_endpoint_t> -> IO ()
 #ccall reliable_endpoint_reset, Ptr <reliable_endpoint_t> -> IO ()
@@ -107,6 +108,9 @@ import Prelude                ( IO, Eq, Show, Num
 #ccall reliable_endpoint_counters, Ptr <reliable_endpoint_t> -> IO (Ptr Word64)
 #ccall reliable_endpoint_destroy, Ptr <reliable_endpoint_t> -> IO ()
 #ccall reliable_log_level, CInt -> IO ()
+
+-- | Generally not useful -- just calls 'free_function' as used in the config.
+#ccall reliable_endpoint_free_packet, Ptr <reliable_endpoint_t> -> Ptr () -> IO ()
 
 -- Only available via low level bindings. In order to use these, the cc-flags
 -- for this package need to remove NDEBUG as part of the preprocessor options.
