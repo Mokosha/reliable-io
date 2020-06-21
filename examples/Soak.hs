@@ -47,8 +47,7 @@ initializeSoak startTime = do
           Reliable.defaultConfig
 
         recvFn :: Word16 -> Ptr Word8 -> Int -> IO Bool
-        recvFn seqNo ptr sz = do
-          putStrLn $ "Received packet: " ++ show seqNo
+        recvFn _ ptr sz = do
           when (ptr == nullPtr) $ fail "Received null pointer"
           when (sz <= 0) $ fail "Received empty packet"
           when (sz <= 2) $ fail "Received empty header"
@@ -111,8 +110,8 @@ iterateSoak client server t =
         Reliable.update client t
         Reliable.update server t
 
---        Reliable.clearAcks client
---        Reliable.clearAcks server
+        Reliable.clearAcks client
+        Reliable.clearAcks server
         
 main :: IO ()
 main = do
