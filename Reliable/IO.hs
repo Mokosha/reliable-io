@@ -51,7 +51,8 @@ module Reliable.IO (
 
 -------------------------------------------------------------------------------
 
-import Control.Monad         (unless)
+import Control.Monad         (when, unless)
+import Data.Bool             (bool)
 import Data.Data             (Data)
 import Data.Typeable         (Typeable)
 import Data.Word             (Word8, Word16, Word64)
@@ -109,10 +110,11 @@ defaultConfig = EndpointConfig c'reliable_default_config
 setName :: String -> EndpointConfig -> EndpointConfig
 setName s (EndpointConfig fn) = EndpointConfig $ \cfgPtr -> do
     fn cfgPtr
+    when (length s >= 256) $ fail "Endpoint config name too long"
     withCStringLen s $ \(csPtr, csLen) -> do
         config <- peek cfgPtr
         cs <- peekArray csLen csPtr
-        poke cfgPtr $ config { c'reliable_config_t'name = cs }
+        poke cfgPtr $ config { c'reliable_config_t'name = (cs <> [0]) }
 
 setConfig :: (C'reliable_config_t -> C'reliable_config_t)
           -> EndpointConfig -> EndpointConfig
@@ -196,11 +198,11 @@ mkTransmitPacketFunction :: TransmitPacketFunction -> IO C'transmit_packet_funct
 mkTransmitPacketFunction fn = mk'transmit_packet_function_t $
     \_ _ seqNo ptr -> fn seqNo ptr . fromIntegral
 
-type ProcessPacketFunction = Word16 -> Ptr Word8 -> Int -> IO Int
+type ProcessPacketFunction = Word16 -> Ptr Word8 -> Int -> IO Bool
 
 mkProcessPacketFunction :: ProcessPacketFunction -> IO C'process_packet_function_t
 mkProcessPacketFunction fn = mk'process_packet_function_t $
-    \_ _ seqNo ptr -> fmap fromIntegral . fn seqNo ptr . fromIntegral
+    \_ _ seqNo ptr -> fmap (bool 0 1) . fn seqNo ptr . fromIntegral
 
 createEndpoint :: EndpointConfig
                -> Double
