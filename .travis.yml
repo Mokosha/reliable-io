@@ -150,8 +150,8 @@ script:
   set -ex
   case "$BUILD" in
     stack)
-      stack --no-terminal $ARGS build --bench --no-run-benchmarks --haddock --no-haddock-deps --flag netcode-io:examples
-      stack --no-terminal $ARGS exec netcode-io-clientserver
+      stack --no-terminal $ARGS build --bench --no-run-benchmarks --haddock --no-haddock-deps --flag reliable-io:examples
+      stack --no-terminal $ARGS exec reliable-io-soak -- 100
       ;;
     cabal)
       cabal install --force-reinstalls --ghc-options=-O0 --reorder-goals --max-backjumps=-1 $CABALARGS $PACKAGES
