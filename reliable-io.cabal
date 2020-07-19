@@ -23,6 +23,8 @@ build-type:          Simple
 extra-source-files:  README.md
                   ,  reliable.io/reliable.h
                   ,  reliable.io/reliable.c
+                  ,  reliable.io/README.md
+                  ,  reliable.io/LICENCE
 
 source-repository head
   type:      git
@@ -40,7 +42,6 @@ library
   exposed-modules:     Bindings.Reliable.IO
                        Reliable.IO
 
-  -- other-extensions:
   build-tools:         hsc2hs
   build-depends:       base >= 4.12 && < 5
                      , bindings-DSL
