@@ -36,9 +36,6 @@ library
   c-sources:           reliable.io/reliable.c
   cc-options:          -std=c99 -DNDEBUG -DRELIABLE_ENABLE_TESTS=1
 
---  if os(linux)
---   cc-options:        -D_POSIX_C_SOURCE=199309L
-
   exposed-modules:     Bindings.Reliable.IO
                        Reliable.IO
 
