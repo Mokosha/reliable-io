@@ -164,7 +164,7 @@ script:
         cabal sdist
         PKGVER=$(cabal info . | awk '{print $2;exit}')
         SRC_TGZ=$PKGVER.tar.gz
-        cd dist
+        cd dist || cd dist-newstyle/sdist
         tar zxfv "$SRC_TGZ"
         cd "$PKGVER"
         cabal configure --ghc-options -O0
