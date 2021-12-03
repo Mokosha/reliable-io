@@ -434,7 +434,7 @@ receivePacket (Endpoint epPtr _) pktPtr =
 getAcks :: Endpoint -> IO [Word16]
 getAcks (Endpoint epPtr _) = alloca $ \numAcksPtr -> do
     acksPtr <- c'reliable_endpoint_get_acks epPtr numAcksPtr
-    numAcks <- peek acksPtr
+    numAcks <- peek numAcksPtr
     peekArray (fromIntegral numAcks) acksPtr
 
 -- | Clears the list of sequence numbers for the most recently ack'd packets.
